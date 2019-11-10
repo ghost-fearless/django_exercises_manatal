@@ -2,3 +2,10 @@ Nov. 10, 2019
 
 step 1
 start 13:17 end 14:46
+
+step 2
+start 14:55 end 16:13
+you need to use basic authentication for PUT/PATCH
+adding a student in a full school will return a drf error message(create(POST) and update(PUT/PATCH))
+Student/School => POST/GET and PUT/PATCH
+Student creation will generate a unique indentification (uuid and split by 20 characters)
