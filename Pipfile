@@ -10,6 +10,7 @@ django = "*"
 psycopg2 = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "2.7"
