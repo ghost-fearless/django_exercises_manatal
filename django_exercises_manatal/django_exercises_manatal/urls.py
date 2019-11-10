@@ -18,6 +18,7 @@ from app.models import School, Student
 from rest_framework import routers, serializers, viewsets
 from django.contrib import admin
 import uuid
+from rest_framework_nested import routers
 
 
 class SchoolSerializer(serializers.ModelSerializer):
@@ -47,7 +48,7 @@ class StudentSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         current_count = Student.objects.filter(school=validated_data.get('school')).count()
         max_count = School.objects.get(pk=validated_data.get('school').id).max_student
-        if current_count >= max_count:
+        if current_count > max_count:
             raise serializers.ValidationError(("School's max student limit is reached"))
         instance.school = validated_data.get('school', instance.school)
         instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -61,12 +62,20 @@ class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
+    def get_queryset(self):
+        return Student.objects.filter(school=self.kwargs['school_pk'])
+
 router = routers.DefaultRouter()
-router.register(r'endpoint/schools', SchoolViewSet)
-router.register(r'endpoint/students', StudentViewSet)
+router.register(r'endpoint/schools', SchoolViewSet, base_name='schools')
+
+
+school_router = routers.NestedSimpleRouter(router, r'endpoint/schools', lookup='school')
+school_router.register(r'students', StudentViewSet, base_name='student')
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'^', include(school_router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]

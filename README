@@ -9,3 +9,7 @@ you need to use basic authentication for PUT/PATCH
 adding a student in a full school will return a drf error message(create(POST) and update(PUT/PATCH))
 Student/School => POST/GET and PUT/PATCH
 Student creation will generate a unique indentification (uuid and split by 20 characters)
+
+step 3
+start 16:20 end 17:06
+added django nested routers

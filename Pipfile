@@ -9,6 +9,7 @@ verify_ssl = true
 django = "*"
 psycopg2 = "*"
 djangorestframework = "*"
+drf-nested-routers = "*"
 
 [requires]
 python_version = "2.7"
